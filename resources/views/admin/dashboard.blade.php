@@ -32,78 +32,59 @@
                 scrollbar-width: none;
             }
 
-            /* Mengganti warna aksen hijau dengan cokelat kopi */
             .text-cafe-accent {
                 color: var(--cafe-accent-brown);
             }
         </style>
     </head>
 
-    <body class="bg-[#f0f2f5] text-[#292929] font-sans p-6 md:p-10">
+    {{-- MODIFIKASI: Menambahkan padding p-6 yang konsisten --}}
+    <body class="bg-[#f0f2f5] text-[#292929] font-sans p-6">
         <div class="max-w-7xl mx-auto">
-            <header class="flex justify-between items-center mb-6">
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
                 <div>
-                    <h1 class="text-xl font-bold">
+                    <h1 class="text-2xl font-bold text-gray-800">
                         Selamat Datang,
-                      
+                        <span class="text-cafe-accent">
+                            {{ Auth::user()->name }}
+                        </span>
                     </h1>
                     <p class="text-sm font-normal text-gray-600">
                         Kelola menu dan pesanan kafe Anda <span class="text-cafe-accent">di sini</span>.
                     </p>
                 </div>
-                <div class="flex items-center space-x-2 text-gray-600">
+                <div class="flex items-center space-x-2 text-gray-600 text-sm flex-shrink-0">
                     <span id="current-date"></span>
                     <i class="fas fa-calendar-alt"></i>
                 </div>
             </header>
 
             <div class="mb-8">
-                <div class="w-full rounded-xl overflow-hidden shadow-lg p-6 bg-[#091936]">
-
-                    <h2 class="text-xl text-white font-bold mb-4 border-b border-white/30 pb-3">Statistik Kunci Hari Ini
-                    </h2>
-
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-white">
-
-                        {{-- WIDGET 1: Pesanan Baru --}}
-                        <div class="p-3 rounded-lg bg-white/10 backdrop-blur-sm">
-                            <p class="text-3xl font-extrabold mb-1">12</p>
-                            <p class="text-xs opacity-80 uppercase tracking-wider">Pesanan Baru</p>
-                        </div>
-
-                        {{-- WIDGET 2: Total Penjualan --}}
-                        <div class="p-3 rounded-lg bg-white/10 backdrop-blur-sm">
-                            <p class="text-3xl font-extrabold mb-1">Rp 485K</p>
-                            <p class="text-xs opacity-80 uppercase tracking-wider">Penjualan Hari Ini</p>
-                        </div>
-
-                        {{-- WIDGET 3: Reservasi Aktif --}}
-                        <div class="p-3 rounded-lg bg-white/10 backdrop-blur-sm">
-                            <p class="text-3xl font-extrabold mb-1">3</p>
-                            <p class="text-xs opacity-80 uppercase tracking-wider">Reservasi Aktif</p>
-                        </div>
-
-                        {{-- WIDGET 4: Item Terlaris (Contoh) --}}
-                        <div class="p-3 rounded-lg bg-white/10 backdrop-blur-sm">
-                            <p class="text-base font-bold mb-1 line-clamp-1">Espresso Blend A</p>
-                            <p class="text-xs opacity-80 uppercase tracking-wider mt-2">Item Terlaris</p>
-                        </div>
-                    </div>
+                <div class="w-full rounded-xl overflow-hidden border border-gray-200">
+                    {{-- Placeholder Banner Kafe --}}
+                    <img alt="Interior Kafe Modern"
+                        class="w-full h-40 object-cover" src="{{ asset('assets/view.jpg') }}"
+                        style="background: linear-gradient(to right, #091936, #58320D); height: 10rem; object-fit: cover;"
+                        onerror="this.style.background='linear-gradient(to right, #091936, #58320D)'; this.src='data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';" />
                 </div>
             </div>
 
             <main>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {{-- MODIFIKASI: Layout grid diubah menjadi lg:grid-cols-4 agar rapi (8 card) --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     {{-- Card 1: Menu & Produk --}}
+                    {{-- MODIFIKASI: Padding diubah ke p-5 dan min-h-[170px] ditambah --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-mug-hot fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-mug-hot"></i>
                         </div>
                         <h2 class="font-semibold text-base">Manajemen Menu</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Tambahkan, sunting, dan hapus semua item makanan,
-                            minuman, dan *snack*.</p>
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Saat ini ada <strong class="text-cafe-accent">{{ $menuItemCount ?? 0 }}</strong> item di menu Anda.
+                        </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Kelola Menu</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>
@@ -112,13 +93,18 @@
 
                     {{-- Card 2: Pesanan (Orders) --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-receipt fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-receipt"></i>
                         </div>
-                        <h2 class="font-semibold text-base">Daftar Pesanan</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Lihat dan proses semua pesanan yang masuk secara
-                            *real-time*.</p>
+                        {{-- MODIFIKASI: Menambahkan badge notifikasi --}}
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-semibold text-base">Daftar Pesanan</h2>
+                            @if(isset($newOrdersCount) && $newOrdersCount > 0)
+                                <span class="bg-red-500 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $newOrdersCount }}</span>
+                            @endif
+                        </div>
+                        <p class="text-sm text-gray-600 leading-tight">Proses pesanan yang masuk secara *real-time*.</p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Lihat Pesanan</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>
@@ -127,13 +113,15 @@
 
                     {{-- Card 3: Stok/Inventory --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-warehouse fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-warehouse"></i>
                         </div>
                         <h2 class="font-semibold text-base">Stok & Inventaris</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Pantau dan kelola stok bahan baku agar tidak
-                            kehabisan kopi, gula, dll.</p>
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Ada <strong class="text-red-600">{{ $lowStockItemsCount ?? 0 }}</strong> item yang stoknya menipis.
+                        </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Kelola Stok</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>
@@ -142,13 +130,15 @@
 
                     {{-- Card 4: Event & Promosi --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-tags fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-tags"></i>
                         </div>
                         <h2 class="font-semibold text-base">Promosi & Event</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Atur info *event* spesial, diskon musiman, dan
-                            promosi kafe.</p>
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Saat ini ada <strong class="text-cafe-accent">{{ $activePromosCount ?? 0 }}</strong> promo & event aktif.
+                        </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Atur Promosi</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>
@@ -157,12 +147,14 @@
 
                     {{-- Card 5: Staff & Karyawan --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-user-friends fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-user-friends"></i>
                         </div>
                         <h2 class="font-semibold text-base">Data Karyawan</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Kelola daftar dan detail staf yang bekerja di kafe.
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Total <strong class="text-cafe-accent">{{ $staffCount ?? 0 }}</strong> karyawan terdaftar di sistem.
                         </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Kelola Sekarang</span>
@@ -172,12 +164,14 @@
 
                     {{-- Card 6: Media & Galeri --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-images fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-images"></i>
                         </div>
                         <h2 class="font-semibold text-base">Media Galeri</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Kelola foto-foto suasana, produk, dan desain kafe.
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Terdapat <strong class="text-cafe-accent">{{ $galleryImageCount ?? 0 }}</strong> gambar di galeri media.
                         </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Kelola Gambar</span>
@@ -187,13 +181,18 @@
 
                     {{-- Card 7: Ulasan & Feedback --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-star fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-star"></i>
                         </div>
-                        <h2 class="font-semibold text-base">Ulasan Pelanggan</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Lihat dan tanggapi *feedback* serta ulasan dari
-                            pelanggan.</p>
+                        {{-- MODIFIKASI: Menambahkan badge notifikasi --}}
+                        <div class="flex items-center justify-between">
+                            <h2 class="font-semibold text-base">Ulasan Pelanggan</h2>
+                            @if(isset($pendingReviewsCount) && $pendingReviewsCount > 0)
+                                <span class="bg-red-500 text-white text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $pendingReviewsCount }}</span>
+                            @endif
+                        </div>
+                        <p class="text-sm text-gray-600 leading-tight">Tanggapi *feedback* serta ulasan baru dari pelanggan.</p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Lihat Ulasan</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>
@@ -202,13 +201,15 @@
 
                     {{-- Card 8: Laporan Penjualan --}}
                     <a href="#"
-                        class="bg-white rounded-lg p-4 flex flex-col space-y-3 shadow-md border border-[#D9D9D9] transition-transform duration-300 hover:scale-[1.02]">
-                        <div class="text-cafe-accent">
-                            <i class="fas fa-chart-line fa-lg"></i>
+                        class="bg-white rounded-lg p-5 flex flex-col space-y-3 shadow-md border border-gray-200 transition-transform duration-300 hover:scale-[1.02] min-h-[170px]">
+                        <div class="text-cafe-accent text-3xl">
+                            <i class="fas fa-chart-line"></i>
                         </div>
                         <h2 class="font-semibold text-base">Laporan Penjualan</h2>
-                        <p class="text-sm text-gray-600 leading-tight">Akses data dan laporan penjualan harian, mingguan,
-                            dan bulanan.</p>
+                        {{-- MODIFIKASI: Deskripsi statis diganti data dinamis --}}
+                        <p class="text-sm text-gray-600 leading-tight">
+                            Penjualan hari ini: <strong class="text-green-600">{{ $todaySalesTotal ?? 'Rp 0' }}</strong>
+                        </p>
                         <span class="text-xs text-cafe-accent font-semibold flex items-center space-x-1 mt-auto pt-2">
                             <span>Akses Laporan</span>
                             <i class="fas fa-arrow-right text-[10px]"></i>

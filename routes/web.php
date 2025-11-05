@@ -7,16 +7,23 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\PromoItemController;
 use App\Http\Controllers\GalleryItemController;
-use App\Http\Controllers\ImageController; 
-use App\Http\Controllers\WritingController; 
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\WritingController;
+use App\Http\Controllers\TestimonialController;
+use App\Models\Testimonial;
+
 // =========================================================
 // 1. RUTE PUBLIK (LANDING PAGE)
 // =========================================================
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     // Ini akan menjadi halaman depan kafe Anda
     return view('welcome');
 });
+
+Route::get('/', [HomeController::class, 'index']);
+
 
 
 // =========================================================
@@ -55,5 +62,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('gallery', GalleryItemController::class);
         Route::resource('image', ImageController::class)->except(['create']);
         Route::resource('writings', WritingController::class);
+        Route::resource('testimonial', TestimonialController::class);
     });
 });

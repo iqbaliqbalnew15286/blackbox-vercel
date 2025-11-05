@@ -121,7 +121,7 @@
 
                 {{-- Editor --}}
                 @php
-                    $editActive = request()->routeIs(['admin.image.*', 'admin.writing.*']);
+                    $editActive = request()->routeIs(['admin.image.*', 'admin.writings.*', 'admin.testimonial.*']);
                 @endphp
                 <div>
                     {{-- Tombol dropdown: ID diubah ke "editor-toggle" --}}
@@ -143,8 +143,12 @@
                         </a>
                         {{-- (Perbaikan Bonus: Route diperbaiki) --}}
                         <a href="{{ route('admin.writings.index') }}"
-                            class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.writing.*')) sidebar-link-active @endif">
-                            Writing
+                            class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.writings.*')) sidebar-link-active @endif">
+                            Writings
+                        </a>
+                        <a href="{{ route('admin.testimonial.index') }}"
+                            class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.testimonial.*')) sidebar-link-active @endif">
+                            Testimonial
                         </a>
                     </div>
                 </div>
