@@ -63,5 +63,17 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('image', ImageController::class)->except(['create']);
         Route::resource('writings', WritingController::class);
         Route::resource('testimonial', TestimonialController::class);
+
+        // Kasir routes
+        Route::get('kasir/index', [App\Http\Controllers\KasirController::class, 'index'])->name('kasir.index');
+        Route::post('kasir/store', [App\Http\Controllers\KasirController::class, 'store'])->name('kasir.store');
+        Route::get('kasir/struk/{id}', [App\Http\Controllers\KasirController::class, 'struk'])->name('kasir.struk');
+        Route::get('kasir/sukses/{id}', [App\Http\Controllers\KasirController::class, 'sukses'])->name('kasir.sukses');
+        Route::post('kasir/change-kasir', [App\Http\Controllers\KasirController::class, 'changeKasir'])->name('kasir.change-kasir');
+
+        // Reports routes
+        Route::get('reports/reports', function () {
+            return view('admin.tables.reports.reports');
+        })->name('reports.index');
     });
 });

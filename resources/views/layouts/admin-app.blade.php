@@ -14,9 +14,7 @@
     <style>
         :-webkit-scrollbar {
             width: 0.5em;
-            /* Atau atur lebar menjadi 0 jika Anda ingin menyembunyikannya sepenuhnya */
             display: none;
-            /* Opsional: untuk memastikan scrollbar tidak muncul sama sekali */
         }
 
         :root {
@@ -30,7 +28,6 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* [... CSS Anda yang lain tetap sama ...] */
         .sidebar {
             background-color: var(--cafe-dark-blue);
             color: white;
@@ -93,7 +90,9 @@
     </style>
 </head>
 
-<body class="flex bg-gray-100">
+<!-- 🔧 Perbaikan di sini: ubah bg-gray-900 jadi bg-gray-100 agar kembali putih -->
+
+<body class="flex bg-gray-100 min-h-screen text-gray-900">
 
     {{-- Sidebar --}}
     <aside id="sidebar"
@@ -124,24 +123,18 @@
                     $editActive = request()->routeIs(['admin.image.*', 'admin.writings.*', 'admin.testimonial.*']);
                 @endphp
                 <div>
-                    {{-- Tombol dropdown: ID diubah ke "editor-toggle" --}}
                     <button id="editor-toggle" class="sidebar-link w-full text-left">
                         <i class="fa-solid fa-pencil w-5 text-center"></i>
                         <span class="flex-1">Editor</span>
-                        {{-- Arrow: ID diubah ke "editor-arrow" --}}
                         <i id="editor-arrow"
                             class="fas fa-chevron-right text-xs transition-transform duration-300 {{ $editActive ? 'rotate-90' : '' }}"></i>
                     </button>
-                    {{-- Konten dropdown: ID diubah ke "editor-submenu" --}}
                     <div id="editor-submenu"
                         class="pl-10 mt-1 space-y-1 collapsible-content {{ $editActive ? 'expanded' : '' }}">
-
-                        {{-- (Perbaikan Bonus: Route diperbaiki) --}}
                         <a href="{{ route('admin.image.index') }}"
                             class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.image.*')) sidebar-link-active @endif">
                             Image
                         </a>
-                        {{-- (Perbaikan Bonus: Route diperbaiki) --}}
                         <a href="{{ route('admin.writings.index') }}"
                             class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.writings.*')) sidebar-link-active @endif">
                             Writings
@@ -153,20 +146,17 @@
                     </div>
                 </div>
 
-
-                {{-- Manajemen Menu (ID ini sekarang unik) --}}
+                {{-- Manajemen Menu --}}
                 @php
                     $menuActive = request()->routeIs(['admin.menu.*', 'admin.promo.*', 'admin.gallery.*']);
                 @endphp
                 <div>
-                    {{-- Tombol dropdown --}}
                     <button id="menu-toggle" class="sidebar-link w-full text-left">
                         <i class="fa-solid fa-mug-hot w-5 text-center"></i>
                         <span class="flex-1">Manajemen Menu</span>
                         <i id="menu-arrow"
                             class="fas fa-chevron-right text-xs transition-transform duration-300 {{ $menuActive ? 'rotate-90' : '' }}"></i>
                     </button>
-                    {{-- Konten dropdown --}}
                     <div id="menu-submenu"
                         class="pl-10 mt-1 space-y-1 collapsible-content {{ $menuActive ? 'expanded' : '' }}">
                         <a href="{{ route('admin.menu.index') }}"
@@ -189,49 +179,65 @@
                     $transaksiActive = request()->routeIs(['admin.orders.*', 'admin.reports.*']);
                 @endphp
                 <div>
-                    {{-- Tombol dropdown --}}
                     <button id="transaksi-toggle" class="sidebar-link w-full text-left">
                         <i class="fa-solid fa-receipt w-5 text-center"></i>
                         <span class="flex-1">Manajemen Transaksi</span>
                         <i id="transaksi-arrow"
                             class="fas fa-chevron-right text-xs transition-transform duration-300 {{ $transaksiActive ? 'rotate-90' : '' }}"></i>
                     </button>
-                    {{-- Konten dropdown --}}
                     <div id="transaksi-submenu"
                         class="pl-10 mt-1 space-y-1 collapsible-content {{ $transaksiActive ? 'expanded' : '' }}">
-                        <a href="#" class="block p-2 text-xs rounded-md hover:bg-gray-700 transition">Pesanan
-                            Masuk</a>
+                        <a href="#" class="block p-2 text-xs rounded-md hover:bg-gray-700 transition">Pesanan</a>
                         <a href="#" class="block p-2 text-xs rounded-md hover:bg-gray-700 transition">Laporan
                             Penjualan</a>
                     </div>
                 </div>
 
-                {{-- Users --}}
+                {{-- Manajemen Kasir --}}
+                @php
+                    $kasirActive = request()->routeIs(['admin.kasir.*', 'admin.reports.*']);
+                @endphp
+                <div>
+                    <button id="kasir-toggle" class="sidebar-link w-full text-left">
+                        <i class="fa-solid fa-cash-register w-5 text-center"></i>
+                        <span class="flex-1">Manajemen Kasir</span>
+                        <i id="kasir-arrow"
+                            class="fas fa-chevron-right text-xs transition-transform duration-300 {{ $kasirActive ? 'rotate-90' : '' }}"></i>
+                    </button>
+                    <div id="kasir-submenu"
+                        class="pl-10 mt-1 space-y-1 collapsible-content {{ $kasirActive ? 'expanded' : '' }}">
+                        <a href="{{ route('admin.kasir.index') }}"
+                            class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.kasir.*')) sidebar-link-active @endif">
+                            Kasir
+                        </a>
+                        <a href="{{ route('admin.reports.index') }}"
+                            class="block p-2 text-xs rounded-md hover:bg-gray-700 transition @if (request()->routeIs('admin.reports.*')) sidebar-link-active @endif">
+                            Laporan Penjualan
+                        </a>
+                    </div>
+                </div>
+
                 <a href="#" class="sidebar-link">
                     <i class="fa-solid fa-users w-5 text-center"></i>
                     <span>Users Management</span>
                 </a>
 
-                {{-- Curator --}}
                 <a href="#" class="sidebar-link">
                     <i class="fa-solid fa-arrow-up-right-from-square w-5 text-center"></i>
                     <span>Curator.io</span>
                 </a>
 
-                {{-- Feedback --}}
                 <a href="#" class="sidebar-link">
                     <i class="fas fa-comments w-5 text-center"></i>
                     <span>Feedback</span>
                 </a>
 
-                {{-- Settings --}}
                 <a href="#" class="sidebar-link">
                     <i class="fas fa-cog w-5 text-center"></i>
                     <span>Settings</span>
                 </a>
             </nav>
 
-            {{-- FOOTER BUTTONS --}}
             <div class="pt-4 space-y-2">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -251,12 +257,9 @@
         </div>
     </aside>
 
-    {{-- Backdrop untuk mobile --}}
     <div id="sidebar-backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden hidden"></div>
 
-    {{-- Main Content --}}
-    <main class="flex-1 md:ml-64 flex flex-col h-screen overflow-hidden">
-
+    <main class="flex-1 md:ml-64 flex flex-col min-h-screen overflow-hidden bg-gray-100">
         <div class="flex-1 overflow-y-auto p-6">
             <div class="max-w-7xl mx-auto">
                 @yield('content')
@@ -265,7 +268,6 @@
     </main>
 
     <script>
-        // Toggle sidebar
         const sidebar = document.getElementById("sidebar");
         const toggleSidebar = document.getElementById("toggleSidebar");
         const backdrop = document.getElementById("sidebar-backdrop");
@@ -284,22 +286,33 @@
             });
         }
 
-
-        // Dropdown logic reusable
-
-        // ======================================================
-        // // ======================================================
-
-        const toggles = [
-            // BARIS INI DITAMBAHKAN
-            { btn: "editor-toggle", content: "editor-submenu", arrow: "editor-arrow" },
-
-            // Baris yang sudah ada
-            { btn: "menu-toggle", content: "menu-submenu", arrow: "menu-arrow" },
-            { btn: "transaksi-toggle", content: "transaksi-submenu", arrow: "transaksi-arrow" },
+        const toggles = [{
+                btn: "editor-toggle",
+                content: "editor-submenu",
+                arrow: "editor-arrow"
+            },
+            {
+                btn: "menu-toggle",
+                content: "menu-submenu",
+                arrow: "menu-arrow"
+            },
+            {
+                btn: "transaksi-toggle",
+                content: "transaksi-submenu",
+                arrow: "transaksi-arrow"
+            },
+            {
+                btn: "kasir-toggle",
+                content: "kasir-submenu",
+                arrow: "kasir-arrow"
+            },
         ];
 
-        toggles.forEach(({ btn, content, arrow }) => {
+        toggles.forEach(({
+            btn,
+            content,
+            arrow
+        }) => {
             const button = document.getElementById(btn);
             const submenu = document.getElementById(content);
             const chevron = document.getElementById(arrow);
@@ -309,8 +322,6 @@
                     submenu.classList.toggle("expanded");
                     chevron.classList.toggle("rotate-90");
                 });
-            } else {
-                console.warn(`Elemen dropdown tidak ditemukan untuk: ${btn}, ${content}, atau ${arrow}`);
             }
         });
     </script>
