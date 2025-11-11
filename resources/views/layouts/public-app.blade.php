@@ -15,6 +15,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
+
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" />
 
@@ -389,5 +394,109 @@
         @yield('content')
     </main>
 </body>
+
+<footer class="bg-[#0b1c3f] text-gray-300">
+    <div class="max-w-7xl mx-auto px-6 py-16 sm:px-12 lg:px-8">
+
+        <!-- Grid Utama Footer -->
+        <!-- 1 kolom di mobile, 2 di tablet, 4 di desktop -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+
+            <!-- Kolom 1: Identitas & Sosial Media -->
+            <div>
+                <a href="#" class="text-3xl font-extrabold text-white">
+                    WARGHE
+                </a>
+                <p class="mt-4 text-sm text-gray-400 leading-relaxed">
+                    Ride by passion, fueled by Warghe. Tempat berkumpulnya para penikmat kopi dan penggemar otomotif.
+                </p>
+                <!-- Ikon Sosial Media -->
+                <div class="flex items-center gap-4 mt-6">
+                    <a href="#" target="_blank" rel="noopener noreferrer" title="Instagram"
+                        class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:bg-white hover:text-[#0b1c3f] hover:scale-110">
+                        <i class="fa-brands fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" title="TikTok"
+                        class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:bg-white hover:text-[#0b1c3f] hover:scale-110">
+                        <i class="fa-brands fa-tiktok text-xl"></i>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" title="Facebook"
+                        class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:bg-white hover:text-[#0b1c3f] hover:scale-110">
+                        <i class="fa-brands fa-facebook-f text-xl"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kolom 2: Navigasi Cepat -->
+            <div>
+                <h3 class="text-lg font-semibold text-white tracking-wider uppercase mb-4">
+                    Navigasi
+                </h3>
+                <ul class="space-y-3">
+                    <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="/menu" class="hover:text-white transition-colors">Menu</a></li>
+                    <li><a href="/promo" class="hover:text-white transition-colors">Promo</a></li>
+                    <li><a href="/about" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                    <li><a href="/testimonials" class="hover:text-white transition-colors">Testimoni</a></li>
+                </ul>
+            </div>
+
+            <!-- Kolom 3: Hubungi Kami -->
+            <div>
+                <h3 class="text-lg font-semibold text-white tracking-wider uppercase mb-4">
+                    Hubungi Kami
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot text-white mt-1 w-4"></i>
+                        <span>Jl. Raya Otomotif No. 123, Kota Anda, 16911</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-phone text-white mt-1 w-4"></i>
+                        <span>(021) 1234 5678</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-envelope text-white mt-1 w-4"></i>
+                        <span>info@warghe.com</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kolom 4: Jam Operasional -->
+            <div>
+                <h3 class="text-lg font-semibold text-white tracking-wider uppercase mb-4">
+                    Jam Buka
+                </h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex justify-between">
+                        <span>Senin - Kamis</span>
+                        <span class="font-medium text-gray-200">10:00 - 22:00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>Jumat</span>
+                        <span class="font-medium text-gray-200">10:00 - 23:00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>Sabtu</span>
+                        <span class="font-medium text-gray-200">09:00 - 23:00</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span>Minggu</span>
+                        <span class="font-medium text-gray-200">09:00 - 22:00</span>
+                    </li>
+                    <li class="mt-4 pt-4 border-t border-gray-700">
+                        <span class="text-green-400 font-semibold">Buka Setiap Hari</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Garis Pemisah & Copyright -->
+        <div class="mt-16 pt-8 border-t border-gray-700 text-center text-sm text-gray-500">
+            &copy; {{ date('Y') }} Warung Garage House. All rights reserved.
+        </div>
+    </div>
+</footer>
 
 </html>

@@ -4,16 +4,24 @@
 
 @section('content')
 
+
   <section id="hero"
     class="relative bg-cover bg-center bg-no-repeat text-[var(--cafe-dark-blue)] min-h-[90vh] md:min-h-screen flex items-center"
     style="background-image: url('{{ asset('assets/bgwarghe.jpg') }}'); margin-top: -90px;">
+
+    <!-- 
+          PERBAIKAN #1: Overlay Gradien untuk Keterbacaan
+          Ini adalah div baru yang melapisi gambar latar belakang. 
+          Gradiennya putih pekat di kiri (belakang teks) dan memudar ke kanan (belakang gambar).
+        -->
+    <div class="absolute inset-0 z-0"
+      style="background: linear-gradient(to right, rgba(255,255,255,0.95) 30%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 80%);">
+    </div>
+
     <style>
       :root {
         --cafe-dark-blue: #0b1c3f;
-
-        /* Variabel coklat ini tidak kita pakai lagi, tapi bisa dibiarkan saja */
         --cafe-accent-brown: #704010;
-
         --cafe-light-gray: #d9d9d9;
         --cafe-link-active-text: #0b1c3f;
       }
@@ -22,27 +30,27 @@
         font-family: 'Poppins', sans-serif;
       }
 
-      /* --- PERUBAHAN DI SINI --- */
+      /* --- Tombol Tetap Sama (Sudah Bagus) --- */
       .btn-primary {
         background: var(--cafe-dark-blue);
-        /* Diubah dari --cafe-accent-brown */
         color: #fff;
         font-weight: 500;
         border-radius: 10px;
         transition: all .3s ease;
+        box-shadow: 0 4px 15px rgba(11, 28, 63, 0.2);
       }
 
       .btn-primary:hover {
         background: #102a5c;
-        /* Diubah dari #8b541a (hover biru yg lebih cerah) */
         transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(11, 28, 63, 0.3);
       }
 
       .btn-outline {
         border: 2px solid var(--cafe-dark-blue);
-        /* Diubah dari --cafe-accent-brown */
         color: var(--cafe-dark-blue);
-        /* Diubah dari --cafe-accent-brown */
+        background: rgba(255, 255, 255, 0.5);
+        /* Latar semi-transparan agar lebih jelas */
         font-weight: 500;
         border-radius: 10px;
         transition: all .3s ease;
@@ -50,18 +58,16 @@
 
       .btn-outline:hover {
         background: var(--cafe-dark-blue);
-        /* Diubah dari --cafe-accent-brown */
         color: #fff;
         transform: translateY(-3px);
       }
 
-      /* --- AKHIR PERUBAHAN CSS --- */
-
-
+      /* --- PERBAIKAN #2: Animasi Fade-Up & Float --- */
       .animate-fade-up {
         opacity: 0;
         transform: translateY(20px);
-        animation: fadeUp 0.8s ease forwards;
+        animation: fadeUp 0.8s ease-out forwards;
+        /* 'ease-out' lebih halus */
       }
 
       @keyframes fadeUp {
@@ -71,27 +77,52 @@
         }
       }
 
-      /* Sedikit bayangan halus agar teks tetap terbaca */
-      .text-readable {
-        text-shadow: 0 1px 3px rgba(255, 255, 255, 0.7);
+      /* Definisi untuk 'animate-float' yang hilang */
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-15px);
+        }
+
+        /* Mengambang ke atas */
+        100% {
+          transform: translateY(0px);
+        }
       }
     </style>
 
+    <!-- 
+          Z-index 10 di sini agar konten berada di ATAS overlay gradien 
+        -->
     <div class="relative w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 xl:px-32 py-24 md:py-32 z-10">
       <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="space-y-6 animate-fade-up text-readable text-center md:text-left">
-          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
 
+        <!-- 
+              PERBAIKAN #3: Animasi Bertahap (Staggered Animation)
+              Saya menambahkan style="animation-delay: ..." pada tiap elemen.
+              Saya juga menghapus .text-readable karena sudah diganti overlay.
+            -->
+        <div class="space-y-6 text-center md:text-left">
+          <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight animate-fade-up"
+            style="animation-delay: 0.1s;">
             Nikmati Kopi Terbaik di <span class="text-[var(--cafe-dark-blue)]">Warung Garage House</span>
-
           </h1>
 
-          <p class="text-lg text-[var(--cafe-dark-blue)] max-w-lg mx-auto md:mx-0">
+          <p class="text-lg text-[var(--cafe-dark-blue)] max-w-lg mx-auto md:mx-0 animate-fade-up"
+            style="animation-delay: 0.3s;">
             Rasakan suasana santai bergaya <em>garage and motorcycle</em>, di mana setiap tegukan kopi bercerita tentang
             rasa, aroma, dan kenangan.
           </p>
 
-          <div class="flex items-center space-x-3 text-yellow-400 text-sm justify-center md:justify-start">
+          <div class="flex items-center space-x-3 text-yellow-400 text-sm justify-center md:justify-start animate-fade-up"
+            style="animation-delay: 0.5s;">
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
@@ -100,7 +131,8 @@
             <span class="text-[var(--cafe-dark-blue)] ml-2 font-medium">4.8/5 dari 6k+ ulasan</span>
           </div>
 
-          <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+          <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start animate-fade-up"
+            style="animation-delay: 0.7s;">
             <a href="#" class="btn-primary px-8 py-3 inline-flex items-center justify-center text-[15px]">
               <i class="fa-solid fa-mug-hot mr-2"></i> Pesan Sekarang
             </a>
@@ -110,13 +142,19 @@
           </div>
         </div>
 
+        <!-- 
+              PERBAIKAN #4: Efek Halus pada Gambar
+              Menambahkan 'animate-float', 'shadow-xl', dan transisi hover.
+            -->
         <div class="flex justify-center md:justify-end animate-float">
-
-          <div
-            class="relative w-72 h-72 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] rounded-full overflow-hidden ring-4 ring-[var(--cafe-dark-blue)]">
+          <div class="relative w-72 h-72 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] rounded-full overflow-hidden 
+                          ring-4 ring-white ring-opacity-50 shadow-2xl 
+                          transition-all duration-500 ease-out hover:scale-105 hover:shadow-cyan-100/20">
+            <!-- 
+                  Ring diubah jadi putih semi-transparan agar lebih menyatu dengan overlay 
+                -->
             <img src="{{ asset('assets/view.jpg') }}" alt="Coffee Cup" class="w-full h-full object-cover">
           </div>
-
         </div>
 
       </div>
@@ -173,15 +211,6 @@
         /* Agar tidak mengganggu interaksi mouse jika ada */
       }
 
-      .scroller-mask::before {
-        left: 0;
-        background: linear-gradient(to right, #0b1c3f, transparent);
-      }
-
-      .scroller-mask::after {
-        right: 0;
-        background: linear-gradient(to left, #0b1c3f, transparent);
-      }
 
       /* Style Kartu Menu yang Lebih Clean */
       .menu-card {
@@ -456,190 +485,226 @@
 
 
 
+  <style>
+    /* PERBAIKAN: Hapus padding di mobile, beri padding hanya di tablet ke atas */
+    .testimonial-wrapper {
+      position: relative;
+      padding: 0;
+      /* Hapus padding di mobile */
+    }
 
-<style>
-  /* --- Container Slider --- */
-  .testimonial-slider-container {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    padding: 0 30px; /* Mobile */
-  }
-
-  @media (min-width: 640px) {
-    .testimonial-slider-container { padding: 0 50px; }
-  }
-  @media (min-width: 1024px) {
-    /* Memberi ruang lebih lega di desktop untuk panah yang lebih besar */
-    .testimonial-slider-container { padding: 0 80px; }
-  }
-
-  /* --- Navigasi Panah Professional --- */
-  .testimonial-nav-prev,
-  .testimonial-nav-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 40px; height: 40px; /* Default Mobile */
-    background-color: white;
-    border: 1px solid #f3f4f6; /* Border lebih halus */
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: #0a1a3c;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Shadow lebih elegan */
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Desktop: Panah lebih besar dan tegas */
-  @media (min-width: 1024px) {
-      .testimonial-nav-prev, .testimonial-nav-next {
-          width: 56px; height: 56px;
-          font-size: 20px;
-          background-color: #fff;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-          border: none; /* Hapus border di desktop agar lebih clean */
+    /* Beri padding HANYA saat layar cukup besar untuk panah */
+    @media (min-width: 768px) {
+      .testimonial-wrapper {
+        padding: 0 40px;
+        /* Padding untuk tablet */
       }
-  }
+    }
 
-  .testimonial-nav-prev:hover, .testimonial-nav-next:hover {
-    background-color: #0a1a3c; color: white;
-    transform: translateY(-50%) scale(1.05); /* Efek hover sedikit membesar */
-    box-shadow: 0 12px 32px rgba(10, 26, 60, 0.25);
-  }
-  .testimonial-nav-prev.swiper-button-disabled, .testimonial-nav-next.swiper-button-disabled {
-    opacity: 0; cursor: not-allowed; pointer-events: none; /* Hilang total jika disabled agar bersih */
-  }
+    @media (min-width: 1024px) {
+      .testimonial-wrapper {
+        padding: 0 60px;
+        /* Padding untuk desktop */
+      }
+    }
 
-  .testimonial-nav-prev { left: 0; }
-  .testimonial-nav-next { right: 0; }
-
-  /* --- Pagination Styles --- */
-  .testimonial-swiper .swiper-pagination-bullet {
-    width: 8px; height: 8px; background-color: #cbd5e1; opacity: 1; transition: all 0.3s ease;
-  }
-  .testimonial-swiper .swiper-pagination-bullet-active {
-    background-color: #0a1a3c; width: 24px; border-radius: 10px;
-  }
-
-  /* --- Dekorasi Tambahan: Ikon Kutipan Background --- */
-  .quote-bg-icon {
+    /* Gaya Tombol Panah yang Clean */
+    .testi-arrow {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      font-size: 4rem;
-      color: #f1f5f9; /* Sangat samar (gray-100) */
-      z-index: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      width: 44px;
+      height: 44px;
+      /* PERBAIKAN: Sembunyikan di mobile */
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      color: #0a1a3c;
+      border: 2px solid #f3f4f6;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* PERBAIKAN: Tampilkan hanya di tablet ke atas */
+    @media (min-width: 768px) {
+      .testi-arrow {
+        display: flex;
+        /* Tampilkan panah di tablet+ */
+      }
+    }
+
+    .testi-arrow:hover {
+      background-color: #0a1a3c;
+      color: white;
+      border-color: #0a1a3c;
+    }
+
+    .testi-prev {
+      left: 0;
+    }
+
+    .testi-next {
+      right: 0;
+    }
+
+    .testi-arrow.swiper-button-disabled {
+      opacity: 0;
+      cursor: default;
       pointer-events: none;
-      font-family: serif; /* Font serif untuk kutipan agar klasik */
-      line-height: 1;
-  }
-</style>
+    }
 
-<section id="testimonials" class="bg-gray-50 py-20 sm:py-28 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    /* Pagination (Titik-titik) */
+    .swiper-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      background-color: #d1d5db;
+      opacity: 1;
+    }
 
-    <div class="text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-[#0a1a3c] tracking-tight">
-        WHAT THEY SAY
-      </h2>
-      <div class="w-20 h-1 bg-[#0a1a3c] mx-auto my-4 rounded-full"></div> <p class="text-lg text-gray-600 leading-relaxed">
-        Dengarkan pengalaman langsung dari mereka yang telah merasakan layanan kami.
-      </p>
-    </div>
+    .swiper-pagination-bullet-active {
+      background-color: #0a1a3c;
+      /* Warna gelap saat aktif */
+    }
+  </style>
 
-    @isset($testimonials)
-      @if ($testimonials->count() > 0)
+  <!-- PERBAIKAN: Tambahkan 'overflow-hidden' di section utama -->
+  <section id="testimonials" class="bg-white py-16 sm:py-24 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="testimonial-slider-container">
-          <div class="testimonial-nav-prev"><i class="fa-solid fa-chevron-left"></i></div>
-          <div class="testimonial-nav-next"><i class="fa-solid fa-chevron-right"></i></div>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-[#0a1a3c] uppercase tracking-tight">
+          CUSTOMER FEEDBACK
+        </h2>
+        <p class="mt-2 text-lg text-gray-500">
+          Read How People See Us !
+        </p>
+      </div>
 
-          <div class="swiper-container testimonial-swiper !py-10 !-my-10"> <div class="swiper-wrapper items-stretch"> @foreach ($testimonials as $testimonial)
-                <div class="swiper-slide !h-auto px-3">
-                  
-                  <div class="group relative bg-white rounded-2xl p-8 h-full flex flex-col transition-all duration-300
-                              shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)]
-                              border border-transparent hover:border-blue-100">
-                    
-                    <div class="quote-bg-icon">“</div>
+      @isset($testimonials)
+        @if ($testimonials->count() > 0)
 
-                    <div class="relative z-10 flex items-center gap-4 mb-6">
-                      @php
-                        $avatarSrc = $testimonial->avatar ? asset(str_starts_with($testimonial->avatar, 'storage/') ? $testimonial->avatar : 'storage/' . $testimonial->avatar) : 'https://placehold.co/100x100/e2e8f0/374151?text=' . substr($testimonial->name, 0, 1);
-                      @endphp
-                      <img src="{{ $avatarSrc }}" alt="{{ $testimonial->name }}" 
-                           class="w-16 h-16 rounded-full object-cover border-4 border-gray-50 shadow-sm">
-                      <div>
-                        <h4 class="font-bold text-lg text-[#0a1a3c] leading-tight">{{ $testimonial->name }}</h4>
-                        @if ($testimonial->role) 
-                          <p class="text-sm font-medium text-gray-500 mt-1">{{ $testimonial->role }}</p> 
-                        @endif
+          <div class="testimonial-wrapper">
+            <!-- Panah Kiri (otomatis tersembunyi di mobile oleh CSS) -->
+            <div class="testi-arrow testi-prev">
+              <i class="fa-solid fa-chevron-left"></i>
+            </div>
+
+            <!-- PERBAIKAN: Tambahkan 'overflow-hidden' di container Swiper -->
+            <div class="swiper-container testimonial-swiper overflow-hidden">
+              <div class="swiper-wrapper items-stretch">
+                @foreach ($testimonials as $testimonial)
+                  <div class="swiper-slide !h-auto">
+
+                    <!-- Kartu Testimoni -->
+                    <div class="bg-[#0a1a3c] rounded-xl p-6 sm:p-8 h-full flex items-center gap-4 sm:gap-6">
+
+                      <!-- Kolom Kiri: Teks -->
+                      <div class="flex-1 flex flex-col h-full text-left min-w-0"> <!-- min-w-0 untuk fix text overflow -->
+                        <p class="text-white text-sm sm:text-base leading-relaxed mb-6">
+                          "{{ $testimonial->quote }}"
+                        </p>
+
+                        <div class="mt-auto">
+                          <!-- PERBAIKAN: flex-wrap agar aman di mobile -->
+                          <div class="flex items-center gap-x-3 gap-y-1 mb-2 flex-wrap">
+                            <div class="flex text-yellow-400 text-sm shrink-0">
+                              @for ($i = 0; $i < 5; $i++)
+                                <i class="{{ $i < $testimonial->rating ? 'fa-solid' : 'fa-regular text-gray-500' }} fa-star"></i>
+                              @endfor
+                            </div>
+                            <span class="text-xs text-gray-400 whitespace-nowrap">
+                              {{ $testimonial->rating }}/5 Customer Feedback
+                            </span>
+                          </div>
+                          <p class="text-white font-semibold text-sm sm:text-base truncate">
+                            - {{ $testimonial->name }}
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="relative z-10 flex text-amber-400 mb-5 text-sm">
-                      @for ($i = 0; $i < 5; $i++)
-                        <i class="{{ $i < $testimonial->rating ? 'fa-solid' : 'fa-regular text-gray-300' }} fa-star mr-1"></i>
-                      @endfor
-                    </div>
+                      <!-- Kolom Kanan: Avatar -->
+                      <div class="flex-shrink-0">
+                        @php
+                          $avatarSrc = $testimonial->avatar
+                            ? asset(str_starts_with($testimonial->avatar, 'storage/') ? $testimonial->avatar : 'storage/' . $testimonial->avatar)
+                            : 'https://placehold.co/150x150/e2e8f0/374151?text=' . substr($testimonial->name, 0, 1);
+                        @endphp
+                        <!-- PERBAIKAN: Ukuran avatar dikecilkan di mobile -->
+                        <div
+                          class="w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-gray-300 overflow-hidden border-2 sm:border-4 border-[#132b61]">
+                          <img src="{{ $avatarSrc }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                        </div>
+                      </div>
 
-                    <p class="relative z-10 text-gray-700 italic leading-relaxed flex-grow">
-                      "{{ $testimonial->quote }}"
-                    </p>
+                    </div>
+                    <!-- END KARTU -->
                   </div>
-                  </div>
-              @endforeach
+                @endforeach
+              </div>
+            </div>
+
+            <!-- Panah Kanan (otomatis tersembunyi di mobile oleh CSS) -->
+            <div class="testi-arrow testi-next">
+              <i class="fa-solid fa-chevron-right"></i>
             </div>
           </div>
-        </div>
 
-        <div class="text-center mt-12">
-          <div class="swiper-pagination !relative !bottom-0 inline-block"></div>
-        </div>
+          <!-- Pagination Dots (Tetap ada di mobile) -->
+          <div class="text-center mt-8">
+            <div class="swiper-pagination !relative !bottom-0 inline-block"></div>
+          </div>
 
-      @else
-        <div class="text-center py-16 px-6 bg-white rounded-3xl border-2 border-dashed border-gray-200 max-w-lg mx-auto">
-          <i class="fa-regular fa-comments text-5xl text-gray-300 mb-6"></i>
-          <h3 class="text-xl font-bold text-gray-900">Belum Ada Ulasan</h3>
-          <p class="text-gray-500 mt-2">Jadilah yang pertama memberikan masukan berharga Anda!</p>
-        </div>
-      @endif
-    @endisset
+        @else
+          <div class="text-center py-12 bg-gray-50 rounded-xl">
+            <p class="text-gray-500">Belum ada feedback.</p>
+          </div>
+        @endif
+      @endisset
 
-    <div class="text-center mt-16">
-      <a href="/testimonials" 
-         class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white text-[#0a1a3c] font-semibold 
-                border border-gray-200 shadow-sm hover:shadow-md hover:text-blue-800 hover:border-blue-100 transition-all">
-        <span>Lihat Semua Testimoni</span> 
-        <i class="fa-solid fa-arrow-right text-sm"></i>
-      </a>
+      <div class="text-center mt-10">
+        <a href="/testimonials"
+          class="inline-block bg-[#0a1a3c] text-white px-8 py-3 rounded font-semibold hover:bg-blue-900 transition-colors">
+          Lihat Semua Testimoni
+        </a>
+      </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (typeof Swiper !== 'undefined') {
+  <!-- Script Swiper (SANGAT PENTING untuk Mobile) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
       new Swiper('.testimonial-swiper', {
-        autoplay: { delay: 6000, disableOnInteraction: false, pauseOnMouseEnter: true },
-        spaceBetween: 0, // Kita atur spacing via padding px-3 di slide agar shadow aman
-        slidesPerView: 1,
-        watchOverflow: true, // Sembunyikan navigasi jika slide sedikit
-        breakpoints: {
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 } // Desktop 3 kolom
+        loop: false,
+        spaceBetween: 24,
+        slidesPerView: 1, // Pastikan 1 slide di mobile
+        watchOverflow: true,
+        autoplay: {
+          delay: 5000,
+          pauseOnMouseEnter: true,
         },
-        pagination: { el: '.swiper-pagination', clickable: true, dynamicBullets: true },
-        navigation: { nextEl: '.testimonial-nav-next', prevEl: '.testimonial-nav-prev' },
+        breakpoints: {
+          // Tablet ke atas: baru tampilkan 2 slide
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 32
+          }
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.testi-next',
+          prevEl: '.testi-prev',
+        },
       });
-    }
-  });
-</script>
-
+    });
+  </script>
   <section class="bg-[#0a1a3c] py-16 sm:py-24">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -668,26 +733,26 @@
 
             <!-- Instagram -->
             <a href="https://instagram.com/username" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all duration-300
-                        text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
+                            text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
               <!-- Gunakan text-xl atau text-2xl untuk ukuran ikon -->
               <i class="fa-brands fa-instagram text-2xl"></i>
             </a>
 
             <!-- TikTok -->
             <a href="https://tiktok.com/@username" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all duration-300
-                        text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
+                            text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
               <i class="fa-brands fa-tiktok text-xl"></i>
             </a>
 
             <!-- Facebook -->
             <a href="https://facebook.com/username" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all duration-300
-                        text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
+                            text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
               <i class="fa-brands fa-facebook-f text-xl"></i>
             </a>
 
             <!-- Opsional: WhatsApp -->
             <a href="https://wa.me/628123456789" target="_blank" rel="noopener noreferrer" title="WhatsApp" class="w-12 h-12 bg-white rounded-full flex items-center justify-center transition-all duration-300
-                        text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
+                            text-[#0a1a3c] hover:bg-gray-200 hover:scale-110 hover:shadow-lg">
               <i class="fa-brands fa-whatsapp text-2xl"></i>
             </a>
 
