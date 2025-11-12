@@ -116,7 +116,7 @@
     <table>
         @foreach ($trx->items as $item)
             <tr>
-                <td colspan="3">{{ $item->produk->nama_produk ?? 'Produk dihapus' }}</td>
+                <td colspan="3">{{ $item->produk->name ?? 'Produk dihapus' }}</td>
             </tr>
             <tr>
                 <td class="text-left">@ {{ number_format($item->harga_satuan, 0, ',', '.') }}</td>

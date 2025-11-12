@@ -57,7 +57,7 @@ class KasirController extends Controller
             foreach ($cart as $item) {
                 TransaksiItem::create([
                     'transaksi_id' => $transaksi->id,
-                    'produk_id' => $item['id'],
+                    'menu_id' => $item['id'], // ⬅️ GANTI dari produk_id ke menu_id
                     'qty' => $item['qty'],
                     'harga_satuan' => $item['price'],
                     'subtotal' => $item['price'] * $item['qty'],
@@ -80,8 +80,8 @@ class KasirController extends Controller
      */
     public function struk($id)
     {
-        $transaksi = Transaksi::with(['items.produk', 'kasir'])->findOrFail($id);
-        return view('kasir.struk', ['trx' => $transaksi]);
+        $transaksi = Transaksi::with(['items.menu', 'kasir'])->findOrFail($id);
+        return view('admin.tables.kasir.struk', ['trx' => $transaksi]);
     }
 
     /**
@@ -89,8 +89,8 @@ class KasirController extends Controller
      */
     public function sukses($id)
     {
-        $transaksi = Transaksi::with(['items.produk', 'kasir'])->findOrFail($id);
-        return view('kasir.sukses', ['transaksi' => $transaksi]);
+        $transaksi = Transaksi::with(['items.menu', 'kasir'])->findOrFail($id);
+        return view('admin.tables.kasir.sukses', ['transaksi' => $transaksi]);
     }
 
     /**
@@ -99,17 +99,17 @@ class KasirController extends Controller
     public function addToCart(Request $request)
     {
         $request->validate([
-            'produk_id' => 'required|exists:produk,id',
+            'menu_id' => 'required|exists:menu_items,id',
             'qty' => 'nullable|integer|min:1'
         ]);
 
-        $produk = Produk::findOrFail($request->produk_id);
+        $menu = MenuItem::findOrFail($request->menu_id);
         $qty = $request->qty ?? 1;
 
         return response()->json([
-            'id' => $produk->id,
-            'name' => $produk->nama_produk,
-            'price' => $produk->harga,
+            'id' => $menu->id,
+            'name' => $menu->name,
+            'price' => $menu->price,
             'qty' => $qty,
         ]);
     }

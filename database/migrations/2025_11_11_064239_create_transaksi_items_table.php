@@ -13,12 +13,22 @@ return new class extends Migration {
         Schema::create('transaksi_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaksi_id');
-            $table->unsignedBigInteger('produk_id');
+            $table->unsignedBigInteger('menu_id'); // ✅ ubah dari produk_id ke menu_id
             $table->integer('qty');
             $table->integer('harga_satuan');
             $table->integer('subtotal');
-            $table->foreign('transaksi_id')->references('id')->on('transaksi')->onDelete('cascade');
-            $table->foreign('produk_id')->references('id')->on('produk');
+
+            // Relasi
+            $table->foreign('transaksi_id')
+                  ->references('id')
+                  ->on('transaksi')
+                  ->onDelete('cascade');
+
+            $table->foreign('menu_id')
+                  ->references('id')
+                  ->on('menu')
+                  ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

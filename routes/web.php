@@ -72,8 +72,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('kasir/change-kasir', [App\Http\Controllers\KasirController::class, 'changeKasir'])->name('kasir.change-kasir');
 
         // Reports routes
-        Route::get('reports/reports', function () {
-            return view('admin.tables.reports.reports');
-        })->name('reports.index');
+        Route::get('reports/reports', [App\Http\Controllers\ReportsController::class, 'index'])->name('reports.index');
+        Route::get('reports/export/{type}', [App\Http\Controllers\ReportsController::class, 'export'])->name('reports.export');
     });
 });

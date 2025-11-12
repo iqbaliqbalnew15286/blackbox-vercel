@@ -58,7 +58,7 @@
                     @foreach ($transaksi->items as $item)
                         <div class="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
                             <div class="text-left">
-                                <div class="text-white font-medium">{{ $item->produk->nama_produk }}</div>
+                                <div class="text-white font-medium">{{ $item->produk->name }}</div>
                                 <div class="text-gray-400 text-sm">Rp {{ number_format($item->harga_satuan, 0, ',', '.') }}
                                     × {{ $item->qty }}</div>
                             </div>
