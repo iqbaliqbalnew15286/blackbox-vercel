@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "public/index.php",
+      "use": "@laravel/vapor-cli@latest",
+      "config": {
+        "memory": 1024
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "public/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://blackbox.vercel.app",
+    "APP_KEY": "base64:GxEheXPEjE1Av3Xyh33PXbnMbeh3jt+YO7odRT3/Qp8=", 
+    "VERCEL_PUBLIC_PATH": "public",
+    "SESSION_DRIVER": "cookie",
+    "LOG_CHANNEL": "stderr"
+  }
+}

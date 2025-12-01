@@ -13,7 +13,7 @@ class ForgotPasswordController extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('admin.auth.ForgotPassword');
+        return view('caffesalon.admin.auth.ForgotPassword');
     }
 
     /**
@@ -38,7 +38,7 @@ class ForgotPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('admin.auth.ResetPassword')->with(
+        return view('caffesalon.admin.auth.ResetPassword')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

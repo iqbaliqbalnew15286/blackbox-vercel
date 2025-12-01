@@ -5,74 +5,137 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\MenuItemController;
-use App\Http\Controllers\PromoItemController;
 use App\Http\Controllers\GalleryItemController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\WritingController;
 use App\Http\Controllers\TestimonialController;
-use App\Models\Testimonial;
-
-// =========================================================
-// 1. RUTE PUBLIK (LANDING PAGE)
-// =========================================================
+use App\Http\Controllers\OurTeamController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Caffe\CaffeHomeController;
+use App\Http\Controllers\Salon\SalonHomeController;
+use App\Http\Controllers\LayananSalonController;
+use App\Http\Controllers\TestimonialSalonController;
+use App\Http\Controllers\GallerySalonController;
 
-Route::get('/', function () {
-    // Ini akan menjadi halaman depan kafe Anda
-    return view('welcome');
+/*
+|--------------------------------------------------------------------------
+| 1. PUBLIC ROUTES (LANDING PAGE)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [HomeController::class, 'index'])->name('welcome');
+
+
+/*
+|--------------------------------------------------------------------------
+| 2. CAFÉ PUBLIC ROUTES (URL: /pages/caffe/...)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('pages/caffe')->name('caffe.')->group(function () {
+    Route::get('/', [CaffeHomeController::class, 'index'])->name('index');
+    Route::get('/ourstory', [CaffeHomeController::class, 'aboutPage'])->name('ourstory');
+    Route::get('/ourteam', [CaffeHomeController::class, 'ourTeamPage'])->name('ourteam');
+    Route::get('/menu', [CaffeHomeController::class, 'menuPage'])->name('menu');
+
+    // Mengarahkan '/gallery' ke photosPage() (sesuai data yang diambil di controller)
+    Route::get('/gallery', [CaffeHomeController::class, 'photosPage'])->name('gallery');
+
+    // Jika Anda ingin tetap mempertahankan /photos sebagai route terpisah:
+    Route::get('/photos', [CaffeHomeController::class, 'photosPage'])->name('photos');
+
+    Route::get('/videos', [CaffeHomeController::class, 'videosPage'])->name('videos');
 });
 
-Route::get('/', [HomeController::class, 'index']);
+
+/*
+|--------------------------------------------------------------------------
+| 3. SALON PUBLIC ROUTES (URL: /salon/...)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('salon')->name('salon.')->group(function () {
+    Route::get('/', [SalonHomeController::class, 'index'])->name('index');
+    Route::get('/layanan', [SalonHomeController::class, 'servicesPage'])->name('layanan');
+    Route::get('/menu', [SalonHomeController::class, 'menuPage'])->name('menu');
+    Route::get('/about', [SalonHomeController::class, 'aboutPage'])->name('about');
+    Route::get('/about/ourteam', [SalonHomeController::class, 'ourTeamPage'])->name('about.ourteam');
+    Route::get('/gallery', [SalonHomeController::class, 'galleryPage'])->name('gallery');
+    Route::get('/contact', [SalonHomeController::class, 'contactPage'])->name('contact');
+    Route::get('/booking', [SalonHomeController::class, 'bookingPage'])->name('booking');
+});
 
 
-
-// =========================================================
-// 2. RUTE AUTENTIKASI
-// =========================================================
+/*
+|--------------------------------------------------------------------------
+| 4. AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-
-// Rute Password Reset
+// Password Reset
 Route::get('lupa-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('lupa-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 
 
-// =========================================================
-// 3. RUTE ADMIN (WARUNG KOPI PANEL)
-// =========================================================
+/*
+|--------------------------------------------------------------------------
+| 5. ADMIN ROUTES (CAFFE + SALON)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/admin', function () {
-        return redirect()->route('admin.dashboard');
+    /*
+    |---------------------------
+    | ADMIN - CAFFE
+    |---------------------------
+    */
+    Route::prefix('admin/caffe')->name('admin.caffe.')->group(function () {
+
+        Route::get('/', fn() => redirect()->route('admin.caffe.dashboard'));
+
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/curator', [AdminController::class, 'curator'])->name('curator');
+        Route::get('/users', [AdminController::class, 'user'])->name('users');
+
+        Route::resource('menu', MenuItemController::class);
+
+        Route::resource('gallery', GalleryItemController::class)->names('gallery');
+
+        Route::resource('testimonial', TestimonialController::class)->names('testimonial');
+        Route::resource('ourteam', OurTeamController::class)->names('ourteam');
+
+        Route::post('ourteam/{id}/upload-photo', [OurTeamController::class, 'uploadPhoto'])
+            ->name('ourteam.upload-photo');
     });
 
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/curator', [AdminController::class, 'curator'])->name('admin.curator');
-    Route::get('/admin/users', [AdminController::class, 'user'])->name('admin.users');
+    /*
+    |---------------------------
+    | ADMIN - SALON
+    |---------------------------
+    */
+    Route::prefix('admin/salon')->name('admin.salon.')->group(function () {
 
-    // Rute resource menu
-    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', fn() => redirect()->route('admin.salon.dashboard'));
+
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/curator', [AdminController::class, 'curator'])->name('curator');
+        Route::get('/users', [AdminController::class, 'user'])->name('users');
+
+        Route::resource('layanansalon', LayananSalonController::class)->names('layanansalon');
+        Route::resource('testimonialsalon', TestimonialSalonController::class)->names('testimonialsalon');
+
         Route::resource('menu', MenuItemController::class);
-        Route::resource('promo', PromoItemController::class);
-        Route::resource('gallery', GalleryItemController::class);
-        Route::resource('image', ImageController::class)->except(['create']);
-        Route::resource('writings', WritingController::class);
-        Route::resource('testimonial', TestimonialController::class);
 
-        // Kasir routes
-        Route::get('kasir/index', [App\Http\Controllers\KasirController::class, 'index'])->name('kasir.index');
-        Route::post('kasir/store', [App\Http\Controllers\KasirController::class, 'store'])->name('kasir.store');
-        Route::get('kasir/struk/{id}', [App\Http\Controllers\KasirController::class, 'struk'])->name('kasir.struk');
-        Route::get('kasir/sukses/{id}', [App\Http\Controllers\KasirController::class, 'sukses'])->name('kasir.sukses');
-        Route::post('kasir/change-kasir', [App\Http\Controllers\KasirController::class, 'changeKasir'])->name('kasir.change-kasir');
+        Route::resource('gallery', GallerySalonController::class)->names('gallery');
 
-        // Reports routes
-        Route::get('reports/reports', [App\Http\Controllers\ReportsController::class, 'index'])->name('reports.index');
-        Route::get('reports/export/{type}', [App\Http\Controllers\ReportsController::class, 'export'])->name('reports.export');
+        Route::resource('ourteam', OurTeamController::class)->names('ourteam');
+
+        Route::post('ourteam/{id}/upload-photo', [OurTeamController::class, 'uploadPhoto'])
+            ->name('ourteam.upload-photo');
     });
 });

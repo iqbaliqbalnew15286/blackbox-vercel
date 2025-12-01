@@ -11,13 +11,12 @@ class MenuItemController extends Controller
     public function index()
     {
         $items = MenuItem::latest()->get();
-        // Mengarahkan ke view admin.tables.menu.index
-        return view('admin.tables.menu.index', compact('items'));
+        return view('caffesalon.admin.tables.menu.index', compact('items'));
     }
 
     public function create()
     {
-        return view('admin.tables.menu.create');
+        return view('caffesalon.admin.tables.menu.create');
     }
 
     public function store(Request $request)
@@ -28,31 +27,25 @@ class MenuItemController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4048',
             'price' => 'required|numeric|min:0',
             'category' => 'required|string|max:255',
-        ], [
-            'name.required' => 'Nama item harus diisi.',
-            'price.required' => 'Harga harus diisi.',
-            'price.numeric' => 'Harga harus berupa angka.',
-            'photo.image' => 'File harus berupa gambar.',
         ]);
 
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('menu_photos', 'public');
-            $validatedData['photo'] = $photoPath;
+            $validatedData['photo'] = $request->file('photo')->store('menu_photos', 'public');
         }
 
         MenuItem::create($validatedData);
 
-        return redirect()->route('admin.menu.index')->with('success', 'Item menu berhasil ditambahkan!');
+        return redirect()->route('admin.caffe.menu.index')->with('success', 'Item menu berhasil ditambahkan!');
     }
 
     public function show(MenuItem $menu)
     {
-        return view('admin.tables.menu.show', compact('menu'));
+        return view('caffesalon.admin.tables.menu.show', compact('menu'));
     }
 
     public function edit(MenuItem $menu)
     {
-        return view('admin.tables.menu.edit', compact('menu'));
+        return view('caffesalon.admin.tables.menu.edit', compact('menu'));
     }
 
     public function update(Request $request, MenuItem $menu)
@@ -66,16 +59,17 @@ class MenuItemController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
+
             if ($menu->photo) {
                 Storage::disk('public')->delete($menu->photo);
             }
-            $photoPath = $request->file('photo')->store('menu_photos', 'public');
-            $validatedData['photo'] = $photoPath;
+
+            $validatedData['photo'] = $request->file('photo')->store('menu_photos', 'public');
         }
 
         $menu->update($validatedData);
 
-        return redirect()->route('admin.menu.index')->with('success', 'Item menu berhasil diperbarui!');
+        return redirect()->route('admin.caffe.menu.index')->with('success', 'Item menu berhasil diperbarui!');
     }
 
     public function destroy(MenuItem $menu)
@@ -86,6 +80,6 @@ class MenuItemController extends Controller
 
         $menu->delete();
 
-        return redirect()->route('admin.menu.index')->with('success', 'Item menu berhasil dihapus!');
+        return redirect()->route('admin.caffe.menu.index')->with('success', 'Item menu berhasil dihapus!');
     }
 }

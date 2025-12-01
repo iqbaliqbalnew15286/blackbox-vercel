@@ -3,43 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\MenuItem; // 1. Model MenuItem (sudah ada)
-use App\Models\PromoItem; // 2. Kita import Model PromoItem
-use App\Models\Testimonial;
+use App\Models\MenuItem;
 
 class HomeController extends Controller
 {
-    /**
-     * Menampilkan halaman utama (homepage).
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
-        // 3. Mengambil data menu (sudah ada)
-        $menuItems = MenuItem::all();
-
-        // 4. Mengambil data promo (sesuai catatan di promo-section.blade.php)
-        //    Kita ambil promo yang aktif, belum kedaluwarsa, diurutkan, dan dibatasi 6.
-        $promoItems = PromoItem::where('is_active', true)
-            ->where('end_date', '>=', now())
-            ->orderBy('end_date', 'asc')
-            ->take(6) // Ambil 6 promo terbaru
-            ->get();
-
-
-        $testimonials = Testimonial::where('is_visible', true)
-            ->latest()
-            ->get();
-
-
-        // 5. Mengirim kedua data ke view 'welcome'
-        return view('welcome', [
-            'menuItems' => $menuItems,
-            'promoItems' => $promoItems, // Data promo ditambahkan di sini
-            'testimonials' => $testimonials,
-        ]);
+        return view('welcome');
     }
 
-    public function menuPage() {}
+    public function menuPage()
+    {
+        $foodItems = MenuItem::where('category', 'Food')->latest()->get();
+        $snackItems = MenuItem::where('category', 'Snacks')->latest()->get();
+        $drinkItems = MenuItem::where('category', 'Drinks')->latest()->get();
+
+        return view('pages.caffe.menu', compact('foodItems', 'snackItems', 'drinkItems'));
+    }
+
+    public function photosPage()
+    {
+        // Return the photos page view - update to correct gallery page view
+        return view('pages.caffe.gallery');
+    }
+
+    public function aboutPage()
+    {
+        // Return the about page view - replace 'public.about' with your actual view
+        return view('public.about');
+    }
+
+    public function ourTeamPage()
+    {
+        // Return the about our team page view - replace 'public.about.ourteam' with your actual view
+        return view('public.about.ourteam');
+    }
+
+    public function videosPage()
+    {
+        // Return the videos page view - replace 'public.videos.index' with your actual view
+        return view('public.videos.index');
+    }
 }

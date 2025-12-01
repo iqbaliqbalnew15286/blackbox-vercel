@@ -14,7 +14,7 @@ class TestimonialController extends Controller
     public function index()
     {
         $items = Testimonial::latest()->get();
-        return view('admin.tables.testimonial.index', compact('items'));
+        return view('caffesalon.admin.tables.testimonial.index', compact('items'));
     }
 
     /**
@@ -22,7 +22,7 @@ class TestimonialController extends Controller
      */
     public function create()
     {
-        return view('admin.tables.testimonial.create');
+        return view('caffesalon.admin.tables.testimonial.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class TestimonialController extends Controller
 
         Testimonial::create($validatedData);
 
-        return redirect()->route('admin.testimonial.index')->with('success', 'Testimoni berhasil ditambahkan!');
+        return redirect()->route('admin.caffe.testimonial.index')->with('success', 'Testimoni berhasil ditambahkan!');
     }
 
     /**
@@ -60,7 +60,7 @@ class TestimonialController extends Controller
      */
     public function show(Testimonial $testimonial)
     {
-        return view('admin.tables.testimonial.show', compact('testimonial'));
+        return view('caffesalon.admin.tables.testimonial.show', compact('testimonial'));
     }
 
     /**
@@ -68,7 +68,7 @@ class TestimonialController extends Controller
      */
     public function edit(Testimonial $testimonial)
     {
-        return view('admin.tables.testimonial.edit', compact('testimonial'));
+        return view('caffesalon.admin.tables.testimonial.edit', compact('testimonial'));
     }
 
     /**
@@ -114,6 +114,6 @@ class TestimonialController extends Controller
 
         $testimonial->delete();
 
-        return redirect()->route('admin.testimonial.index')->with('success', 'Testimoni berhasil dihapus!');
+        return redirect()->route('admin.caffe.testimonial.index')->with('success', 'Testimoni berhasil dihapus!');
     }
 }

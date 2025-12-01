@@ -14,13 +14,13 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('caffesalon.admin.dashboard');
     }
 
     public function curator()
     {
-        return view('admin.curator');
-    }   
+        return view('caffesalon.admin.curator');
+    }
 
     public function user()
     {
@@ -28,6 +28,6 @@ class AdminController extends Controller
         // Eager loading 'session' untuk performa yang lebih baik (menghindari N+1 query)
         $users = User::with('session')->get();
 
-        return view('admin.user', compact('users'));
+        return view('caffesalon.admin.user', compact('users'));
     }
 }

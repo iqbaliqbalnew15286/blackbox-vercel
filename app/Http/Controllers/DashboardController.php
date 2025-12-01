@@ -8,7 +8,7 @@ use App\Models\PromoItem;
 use App\Models\GalleryItem;
 use App\Models\User;
 // Asumsi Anda memiliki model-model ini:
-// use App\Models\Order; 
+// use App\Models\Order;
 // use App\Models\Review;
 
 use Illuminate\Http\Request;
@@ -21,12 +21,12 @@ class DashboardController extends Controller
         // 1. Ambil semua data
         $menuItemCount = MenuItem::count();
         $activePromosCount = PromoItem::where('is_active', true)
-                                      ->where('end_date', '>=', now())
-                                      ->count();
+            ->where('end_date', '>=', now())
+            ->count();
         $galleryImageCount = GalleryItem::count();
-        
+
         // Asumsi: Menghitung staf berdasarkan 'role'
-        $staffCount = User::where('role', 'staff')->count(); 
+        $staffCount = User::where('role', 'staff')->count();
 
         // Asumsi: Logika untuk data yang mungkin belum Anda miliki
         // Ganti ini dengan logika Anda sendiri
@@ -36,13 +36,13 @@ class DashboardController extends Controller
 
         // Asumsi: Logika untuk total penjualan hari ini
         $todaySalesTotal = 0; // Ganti dengan: Order::whereDate('created_at', today())->sum('total_price');
-        
+
         // 2. Format data (opsional, tapi bagus untuk penjualan)
         $formattedSales = 'Rp ' . number_format($todaySalesTotal, 0, ',', '.');
 
 
         // 3. Kirim semua data ke view
-        return view('admin.dashboard', [
+        return view('caffesalon.admin.dashboard', [
             'menuItemCount' => $menuItemCount,
             'newOrdersCount' => $newOrdersCount,
             'lowStockItemsCount' => $lowStockItemsCount,

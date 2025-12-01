@@ -14,7 +14,7 @@ class GalleryItemController extends Controller
     public function index()
     {
         $items = GalleryItem::latest()->get();
-        return view('admin.tables.gallery.index', compact('items'));
+        return view('caffesalon.admin.tables.gallery.index', compact('items'));
     }
 
     /**
@@ -22,7 +22,7 @@ class GalleryItemController extends Controller
      */
     public function create()
     {
-        return view('admin.tables.gallery.create');
+        return view('caffesalon.admin.tables.gallery.create');
     }
 
     /**
@@ -31,12 +31,11 @@ class GalleryItemController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             // Gambar 'wajib' ada saat membuat item galeri baru
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', 
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ], [
-            'name.required' => 'Nama gambar harus diisi.',
             'image.required' => 'File gambar harus di-upload.',
             'image.image' => 'File harus berupa gambar.',
         ]);
@@ -46,11 +45,11 @@ class GalleryItemController extends Controller
         $validatedData['image_path'] = $imagePath;
 
         // Hapus 'image' dari array karena tidak ada di DB
-        unset($validatedData['image']); 
+        unset($validatedData['image']);
 
         GalleryItem::create($validatedData);
 
-        return redirect()->route('admin.gallery.index')->with('success', 'Gambar berhasil ditambahkan ke galeri!');
+        return redirect()->route('admin.caffe.gallery.index')->with('success', 'Gambar berhasil ditambahkan ke galeri!');
     }
 
     /**
@@ -58,7 +57,7 @@ class GalleryItemController extends Controller
      */
     public function show(GalleryItem $gallery) // Menggunakan Route Model Binding
     {
-        return view('admin.tables.gallery.show', compact('gallery'));
+        return view('caffesalon.admin.tables.gallery.show', compact('gallery'));
     }
 
     /**
@@ -66,7 +65,7 @@ class GalleryItemController extends Controller
      */
     public function edit(GalleryItem $gallery)
     {
-        return view('admin.tables.gallery.edit', compact('gallery'));
+        return view('caffesalon.admin.tables.gallery.edit', compact('gallery'));
     }
 
     /**
@@ -97,7 +96,7 @@ class GalleryItemController extends Controller
 
         $gallery->update($validatedData);
 
-        return redirect()->route('admin.gallery.index')->with('success', 'Item galeri berhasil diperbarui!');
+        return redirect()->route('admin.caffe.gallery.index')->with('success', 'Item galeri berhasil diperbarui!');
     }
 
     /**
@@ -113,6 +112,6 @@ class GalleryItemController extends Controller
         // Hapus data dari database
         $gallery->delete();
 
-        return redirect()->route('admin.gallery.index')->with('success', 'Gambar berhasil dihapus dari galeri!');
+        return redirect()->route('admin.caffe.gallery.index')->with('success', 'Gambar berhasil dihapus dari galeri!');
     }
 }

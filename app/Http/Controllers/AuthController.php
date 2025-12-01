@@ -18,7 +18,7 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('admin.login');
+        return view('caffesalon.admin.login');
     }
 
     /**
@@ -52,7 +52,7 @@ class AuthController extends Controller
             RateLimiter::clear($throttleKey);
 
             $request->session()->regenerate();
-            return redirect()->intended('/admin/dashboard')->with('status', 'Login berhasil!');
+            return redirect()->intended('/admin/caffe/dashboard')->with('status', 'Login berhasil!');
         }
 
         // **[IMPROVEMENT]** Tambahkan 1 percobaan gagal ke rate limiter
